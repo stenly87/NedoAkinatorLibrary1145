@@ -35,6 +35,7 @@ namespace NedoAkinatorLibrary1145.Model
             var historyRep = new HistoryRepository();
             currentHistory = new HistoryRecord();
             historyRep.Create(currentHistory);
+            historyRep.Save();
             currentHistory.Id = historyRep.GetLastID();
 
             var rep = new CharacterRepository();

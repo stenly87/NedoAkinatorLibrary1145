@@ -70,14 +70,13 @@ namespace NedoAkinatorLibrary1145.Repository
                 Where(s => s.IdCharacter == id).
                 Select(s => new HistoryRecord(s.Id, s.IdCharacter, new CharacterRecord(
                 s.IdCharacterNavigation.Id, s.IdCharacterNavigation.Title,
-                s.IdCharacterNavigation.Image)))
-                ;
+                s.IdCharacterNavigation.Image)));
         }
 
         internal int GetLastID()
         {
             var db = GetDB();
-            var history = db.Histories.AsNoTracking().Last();
+            var history = db.Histories.AsNoTracking().OrderBy(s=>s.Id).LastOrDefault();
             return history.Id;
         }
     }
