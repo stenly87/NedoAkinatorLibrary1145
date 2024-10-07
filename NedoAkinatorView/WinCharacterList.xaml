@@ -1,0 +1,48 @@
+﻿<Window x:Class="NedoAkinatorView.WinCharacterList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NedoAkinatorView"
+        mc:Ignorable="d"
+        xmlns:model="clr-namespace:NedoAkinatorLibrary1145.Model;assembly=NedoAkinatorLibrary1145"
+        Title="WinCharacterList" Height="450" Width="800">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type model:CharacterRecord}">
+            <StackPanel>
+                <Image Source="{Binding Image}" Width="100"/>
+                <Label Content="{Binding Title}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ListBox 
+            ItemsSource="{Binding Characters}"
+            SelectedItem="{Binding Selected}"
+            SelectedIndex="{Binding SelectedIndex}">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить" Click="NewCharacter"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+
+        <StackPanel Grid.Column="1">
+            <Label Content="Имя"/>
+            <TextBox Text="{Binding TitleCharacter}" />
+            <Label Content="Изображение"/>
+            <Image Source="{Binding Image}"
+                   Width="300"/>
+            <Button Content="Выбор изображения"
+                    Click="OpenImage"/>
+            <Button Content="Сохранить"
+                    Click="Save"/>
+        </StackPanel>
+    </Grid>
+</Window>

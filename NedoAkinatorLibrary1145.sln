@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NedoAkinatorLibrary1145", "NedoAkinatorLibrary1145\NedoAkinatorLibrary1145.csproj", "{1A8D8BA4-AA30-4AC8-BC60-5B57F5A2B279}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NedoAkinatorView", "NedoAkinatorView\NedoAkinatorView.csproj", "{4925415A-E1E3-43BD-B9B9-BBE66CAF3EC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1A8D8BA4-AA30-4AC8-BC60-5B57F5A2B279}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A8D8BA4-AA30-4AC8-BC60-5B57F5A2B279}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A8D8BA4-AA30-4AC8-BC60-5B57F5A2B279}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A8D8BA4-AA30-4AC8-BC60-5B57F5A2B279}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4925415A-E1E3-43BD-B9B9-BBE66CAF3EC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4925415A-E1E3-43BD-B9B9-BBE66CAF3EC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4925415A-E1E3-43BD-B9B9-BBE66CAF3EC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4925415A-E1E3-43BD-B9B9-BBE66CAF3EC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FCF97C44-142B-4A1D-B236-C7385AD57EB4}
+	EndGlobalSection
+EndGlobal

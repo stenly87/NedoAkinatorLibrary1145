@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="NedoAkinatorView.AskQuestion"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NedoAkinatorView"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel>
+        <TextBlock HorizontalAlignment="Center" FontSize="20" FontWeight="Bold" Padding="10" Text="{Binding Question.Text}" TextWrapping="Wrap"/>
+        <TextBlock Text="Выберите ответ" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="3" Padding="10" Width="100" HorizontalAlignment="Center" Tag="5" Click="ClickAnswer" Content="Да"/>
+            <Button Margin="3" Padding="10" Width="100" HorizontalAlignment="Center" Tag="4" Click="ClickAnswer" Content="Скорее да"/>
+            <Button Margin="3" Padding="10" Width="100" HorizontalAlignment="Center" Tag="3" Click="ClickAnswer" Content="Скорее нет"/>
+            <Button Margin="3" Padding="10" Width="100" HorizontalAlignment="Center" Tag="2" Click="ClickAnswer" Content="Нет"/>
+            <Button Margin="3" Padding="10" Width="100" HorizontalAlignment="Center" Tag="1" Click="ClickAnswer" Content="Не знаю"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
