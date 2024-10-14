@@ -63,6 +63,7 @@ namespace NedoAkinatorLibrary1145.Repository
             var db = GetDB();
             return db.Histories.Include(s => s.IdCharacterNavigation).
                 AsNoTracking().
+                Where(s => s.IdCharacter == id).ToList();
    
         }
 
