@@ -44,7 +44,25 @@ namespace NedoAkinatorView
         private void Game_ChangeQuestion(object? sender, EventArgs e)
         {
             gridHost.Children.Clear();
-            gridHost.Children.Add(new AskQuestion(game.GetNextQuestion(), game));
+            var question = game.GetNextQuestion();
+            if (question != null)
+                gridHost.Children.Add(new AskQuestion(question, game));
+            else
+            {
+                if (MessageBox.Show("Это " +
+                    game.targetCharacter.Title + "?",
+                    "Предположение",
+                     MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    game.RememberResult(game.targetCharacter);
+                    MessageBox.Show("Ура");
+                }
+                else
+                {
+                    new WindowGetAnswer(game).Show();
+                }
+                
+            }
         }
     }
 }

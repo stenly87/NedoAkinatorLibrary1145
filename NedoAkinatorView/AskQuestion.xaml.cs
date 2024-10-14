@@ -22,6 +22,8 @@ namespace NedoAkinatorView
     /// </summary>
     public partial class AskQuestion : UserControl, INotifyPropertyChanged
     {
+        public string PossibleCharacter { get => game.targetCharacter?.Title; }
+
         private Question question;
         private readonly Game game;
 
@@ -49,6 +51,7 @@ namespace NedoAkinatorView
         {
             var reaction = int.Parse(((Button)sender).Tag.ToString());
             game.RememberReaction(question, reaction);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PossibleCharacter)));
         }
     }
 }

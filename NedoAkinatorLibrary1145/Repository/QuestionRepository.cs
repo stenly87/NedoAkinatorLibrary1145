@@ -36,7 +36,7 @@ namespace NedoAkinatorLibrary1145.Repository
         {
             var db = GetDB();
             return db.Questions.
-                AsNoTracking();
+                AsNoTracking().ToList();
         }
 
         public override void Update(Question item)
@@ -52,7 +52,7 @@ namespace NedoAkinatorLibrary1145.Repository
             int count = db.Questions.Count();
             Random rnd = new Random();
             var s = db.Questions.AsNoTracking()
-                .Skip(rnd.Next(0, count-1)).First();
+                .Skip(rnd.Next(0, count)).First();
             return s;
         }
     }

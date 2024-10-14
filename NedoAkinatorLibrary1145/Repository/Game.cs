@@ -7,19 +7,90 @@ namespace NedoAkinatorView
     {
         History currentHistory;
         Question currentQuestion;
-        List<Question> questionsByRank;
-        List<Character> characterByRank;
-        Character targetCharacter;
+        IEnumerable<Question> allQuestions;
+        List<Cross> reactionHistory = new ();
+        IEnumerable<Character> characterByRank;
+        public Character targetCharacter;
 
         public Question GetNextQuestion()
         {
+            if (currentQuestion == null)
+            {
+                ReRankCharacters();
+                ReRankQuestions();
+            }
             return currentQuestion;
+        }
+
+        private void ReRankQuestions()
+        {
+            var rep = new CrossRepository();
+            var notAsked = allQuestions.Where(s =>
+                reactionHistory.FirstOrDefault(r => r.IdQuestion == s.Id) == null);
+
+            foreach (var question in notAsked)
+            {
+                List<float> Bj = new List<float>();
+                foreach (var cross in reactionHistory)
+                {
+                    int count = rep.GetSameReaction(targetCharacter.Id,
+                        cross.IdQuestion,
+                        cross.Reaction.Value);
+
+                    int countTotal = rep.GetQuestionByCharacter(targetCharacter.Id);
+
+                    Bj.Add(count / (float)countTotal);
+                }
+                question.Rank = Or(Bj.ToArray());
+            }
+            notAsked = notAsked.OrderBy(s=> s.Rank);
+            currentQuestion = notAsked.FirstOrDefault();
+        }
+
+        private void ReRankCharacters()
+        {
+            var rep = new CrossRepository();
+            foreach (var character in characterByRank)
+            {
+                List<float> Bj = new List<float>();
+                foreach (var cross in reactionHistory)
+                {
+                    int count = rep.GetSameReaction(character.Id,
+                        cross.IdQuestion,
+                        cross.Reaction.Value);
+
+                    int countTotal = rep.GetQuestionByCharacter(character.Id);
+
+                    Bj.Add(count / (float)countTotal);
+                }
+                character.Rank = Or(Bj.ToArray());
+            }
+            characterByRank = characterByRank.OrderBy(s=> s.Rank);
+            targetCharacter = characterByRank.FirstOrDefault();
+        }
+
+        public static float Or(params float[] eventsPossibility)
+        {
+            var summ = eventsPossibility.Aggregate((p, x) => p += x);
+
+            return summ / eventsPossibility.Length;
         }
 
         public void RememberReaction(Question question, int reaction)
         {
+            var rep = new CrossRepository();
+            var react = new Cross
+            {
+                IdHistory = currentHistory.Id,
+                IdQuestion = question.Id,
+                Reaction = reaction
+            };
+            rep.Create(react);
+            rep.Save();
+            reactionHistory.Add(react);
 
 
+            currentQuestion = null;
             ChangeQuestion?.Invoke(this, new EventArgs());
         }
 
@@ -27,6 +98,11 @@ namespace NedoAkinatorView
         {
             var questionRep = new QuestionRepository();
             var historyRep = new HistoryRepository();
+            allQuestions = questionRep.GetList();
+            foreach (var item in allQuestions)
+                item.Rank = 1.0 / allQuestions.Count();
+            allQuestions = allQuestions.OrderBy(s => s.Rank);
+
             currentHistory = new History();
             historyRep.Create(currentHistory);
             historyRep.Save();
@@ -63,7 +139,7 @@ namespace NedoAkinatorView
                 currentQuestion = questionRep.Get(unicQuestion.First().Key);
             }
             else
-                currentQuestion = questionRep.GetRandom();
+                currentQuestion = allQuestions.First();
 
             ChangeQuestion?.Invoke(this, new EventArgs());
         }
@@ -71,6 +147,23 @@ namespace NedoAkinatorView
         public void Dispose()
         {
             ChangeQuestion = null;
+        }
+
+        public void RememberResult(Character targetCharacter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Save(Character character)
+        {
+            var rep = new CharacterRepository();
+            rep.Create(character);
+            rep.Save();
+            currentHistory.IdCharacter = character.Id;
+
+            var hisRep = new HistoryRepository();
+            hisRep.Update(currentHistory);
+            hisRep.Save();
         }
 
         public event EventHandler ChangeQuestion;

@@ -75,7 +75,6 @@ namespace NedoAkinatorView
                 Questions[SelectedIndex] = Selected;
             else
                 Questions.Add(Selected);
-
         }
 
         private void NewQuestion(object sender, RoutedEventArgs e)

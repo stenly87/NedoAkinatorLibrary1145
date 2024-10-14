@@ -60,12 +60,32 @@ namespace NedoAkinatorLibrary1145.Repository
             db.Entry(origin).CurrentValues.SetValues(item);
         }
 
+        internal int GetQuestionByCharacter(int idCharacter)
+        {
+            var db = GetDB();
+            return db.Crosses.
+                Include(s => s.IdHistoryNavigation).
+                Where(s => s.IdHistoryNavigation.IdCharacter == idCharacter)
+                .Count();
+        }
+
         internal IEnumerable<Cross> GetQuestionsByHistory(int id)
         {
             var db = GetDB();
             return db.Crosses.
                 Where(s => s.IdHistory == id).
                 AsNoTracking();
+        }
+
+        internal int GetSameReaction(int idCharacter, int idQuestion, int reaction)
+        {
+            var db = GetDB();
+            return db.Crosses.
+                Include(s => s.IdHistoryNavigation).
+                Where(s => s.Reaction == reaction &&
+                s.IdQuestion == idQuestion &&
+                s.IdHistoryNavigation.IdCharacter == idCharacter)
+                .Count();
         }
     }
 }
