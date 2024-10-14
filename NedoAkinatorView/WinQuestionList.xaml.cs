@@ -72,7 +72,9 @@ namespace NedoAkinatorView
                 rep.Update(Selected);
             rep.Save();
             if (Questions.Count > SelectedIndex && Questions.Count > 0)
-                Questions[SelectedIndex] = Selected;        
+                Questions[SelectedIndex] = Selected;
+            else
+                Questions.Add(Selected);
 
         }
 

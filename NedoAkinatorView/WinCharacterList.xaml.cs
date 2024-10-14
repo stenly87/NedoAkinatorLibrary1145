@@ -33,16 +33,17 @@ namespace NedoAkinatorView
         public int SelectedIndex { get; set; }
 
         public ObservableCollection<Character> Characters { get; set; }
-        public Character Selected { 
+        public Character Selected
+        {
             get => selected;
             set
             {
                 selected = value;
                 TitleCharacter = value?.Title;
                 Image = value?.Image;
-                PropertyChanged?.Invoke(this, 
+                PropertyChanged?.Invoke(this,
                     new PropertyChangedEventArgs(nameof(Title)));
-                }
+            }
         }
 
         public string TitleCharacter { get; set; }
@@ -50,7 +51,7 @@ namespace NedoAkinatorView
         {
             get => image;
             set
-            { 
+            {
                 image = value;
                 PropertyChanged?.Invoke(this,
                    new PropertyChangedEventArgs(nameof(Image)));
@@ -76,7 +77,7 @@ namespace NedoAkinatorView
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 Image = File.ReadAllBytes(dialog.FileName);
-                
+
             }
         }
 
@@ -90,12 +91,18 @@ namespace NedoAkinatorView
             };
             var rep = new CharacterRepository();
             if (Selected.Id == 0)
+            {
                 rep.Create(Selected);
+                Characters.Add(Selected);
+            }
             else
+            {
                 rep.Update(Selected);
+                Characters[SelectedIndex] = Selected;
+            }
             rep.Save();
-            Characters[SelectedIndex] = Selected;
-            
+
+
         }
 
         private void NewCharacter(object sender, RoutedEventArgs e)
