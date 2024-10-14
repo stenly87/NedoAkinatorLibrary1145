@@ -1,28 +1,22 @@
 ﻿using NedoAkinatorLibrary1145.DB;
 using NedoAkinatorLibrary1145.Repository;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NedoAkinatorLibrary1145.Model
+namespace NedoAkinatorView
 {
     public class Game : IDisposable
     {
-        HistoryRecord currentHistory;
-        QuestionRecord currentQuestion;
-        List<QuestionRecord> questionsByRank;
-        List<CharacterRecord> characterByRank;
-        CharacterRecord targetCharacter;
+        History currentHistory;
+        Question currentQuestion;
+        List<Question> questionsByRank;
+        List<Character> characterByRank;
+        Character targetCharacter;
 
-        public QuestionRecord GetNextQuestion()
+        public Question GetNextQuestion()
         {
             return currentQuestion;
         }
 
-        public void RememberReaction(QuestionRecord question, int reaction)
+        public void RememberReaction(Question question, int reaction)
         {
 
 
@@ -33,12 +27,13 @@ namespace NedoAkinatorLibrary1145.Model
         {
             var questionRep = new QuestionRepository();
             var historyRep = new HistoryRepository();
-            currentHistory = new HistoryRecord();
+            currentHistory = new History();
             historyRep.Create(currentHistory);
+            historyRep.Save();
             currentHistory.Id = historyRep.GetLastID();
 
             var rep = new CharacterRepository();
-            var allCharacters = new List<CharacterRecord>(rep.GetList());
+            var allCharacters = new List<Character>(rep.GetList());
             for (int i = 0; i < allCharacters.Count; i++)
             {
                 allCharacters[i].Rank = 1.0 / allCharacters.Count;
@@ -52,19 +47,19 @@ namespace NedoAkinatorLibrary1145.Model
             var historyByCharacter = historyRep.
                 GetHistoryByCharacter(targetCharacter.Id).ToList();
             var crossRep = new CrossRepository();
-            List<CrossRecord> crossRecords = new();
+            List<Cross> crosss = new();
             if (historyByCharacter.Count != 0)
             {
                 for (int i = 0; i < historyByCharacter.Count; i++)
                 {
                     var questions = crossRep.
                         GetQuestionsByHistory(historyByCharacter[i].Id);
-                    crossRecords.AddRange(questions);
+                    crosss.AddRange(questions);
                 }
-                int allQuestions = crossRecords.Count();
-                var unicQuestion = crossRecords.
+                int allQuestions = crosss.Count();
+                var unicQuestion = crosss.
                     GroupBy(s => s.IdQuestion).
-                    Select(s => (s.Key, Count: s.Count())).OrderByDescending(s=>s.Count);
+                    Select(s => (s.Key, Count: s.Count())).OrderByDescending(s => s.Count);
                 currentQuestion = questionRep.Get(unicQuestion.First().Key);
             }
             else

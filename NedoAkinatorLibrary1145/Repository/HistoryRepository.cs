@@ -1,14 +1,14 @@
-﻿using NedoAkinatorLibrary1145.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using NedoAkinatorLibrary1145.DB;
 
 namespace NedoAkinatorLibrary1145.Repository
 {
-    public class HistoryRepository : BaseRepository<HistoryRecord>
+    public class HistoryRepository : BaseRepository<History>
     {
-        public override void Create(HistoryRecord item)
+        public override void Create(History item)
         {
             var db = GetDB();
-            db.Histories.Add(new DB.History
+            db.Histories.Add(new History
             {
                  IdCharacter = item.IdCharacter
             });
@@ -24,25 +24,21 @@ namespace NedoAkinatorLibrary1145.Repository
             }
         }
 
-        public override HistoryRecord Get(int id)
+        public override History Get(int id)
         {
             var db = GetDB();
             var s = db.Histories.Include(s=>s.IdCharacterNavigation).AsNoTracking().FirstOrDefault(s => s.Id == id);
-            return new HistoryRecord(s.Id, s.IdCharacter, new CharacterRecord (
-                 s.IdCharacterNavigation.Id,  s.IdCharacterNavigation.Title,
-                 s.IdCharacterNavigation.Image));
+            return s;
         }
 
-        public override IEnumerable<HistoryRecord> GetList()
+        public override IEnumerable<History> GetList()
         {
             var db = GetDB();
             return db.Histories.Include(s => s.IdCharacterNavigation).AsNoTracking().
-                Select(s => new HistoryRecord(s.Id, s.IdCharacter, new CharacterRecord(
-                s.IdCharacterNavigation.Id, s.IdCharacterNavigation.Title,
-                s.IdCharacterNavigation.Image)));
+                ToList();
         }
 
-        public override void Update(HistoryRecord item)
+        public override void Update(History item)
         {
             var db = GetDB();
             var origin = db.Histories.Find(item.Id);
@@ -62,22 +58,18 @@ namespace NedoAkinatorLibrary1145.Repository
             return db.Histories.Count();
         }
 
-        internal IEnumerable<HistoryRecord> GetHistoryByCharacter(int id)
+        internal IEnumerable<History> GetHistoryByCharacter(int id)
         {
             var db = GetDB();
             return db.Histories.Include(s => s.IdCharacterNavigation).
                 AsNoTracking().
-                Where(s => s.IdCharacter == id).
-                Select(s => new HistoryRecord(s.Id, s.IdCharacter, new CharacterRecord(
-                s.IdCharacterNavigation.Id, s.IdCharacterNavigation.Title,
-                s.IdCharacterNavigation.Image)))
-                ;
+                Where(s => s.IdCharacter == id).ToList();
         }
 
         internal int GetLastID()
         {
             var db = GetDB();
-            var history = db.Histories.AsNoTracking().Last();
+            var history = db.Histories.AsNoTracking().OrderBy(s=>s.Id).Last();
             return history.Id;
         }
     }

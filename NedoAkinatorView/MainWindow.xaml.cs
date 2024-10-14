@@ -1,5 +1,4 @@
-﻿using NedoAkinatorLibrary1145.Model;
-using System.Text;
+﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

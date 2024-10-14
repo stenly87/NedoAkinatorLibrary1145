@@ -1,5 +1,4 @@
 ﻿using NedoAkinatorLibrary1145.DB;
-using NedoAkinatorLibrary1145.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,10 +22,10 @@ namespace NedoAkinatorView
     /// </summary>
     public partial class AskQuestion : UserControl, INotifyPropertyChanged
     {
-        private QuestionRecord question;
+        private Question question;
         private readonly Game game;
 
-        public QuestionRecord Question
+        public Question Question
         {
             get => question;
             set
@@ -36,10 +35,10 @@ namespace NedoAkinatorView
             }
         }
 
-        public AskQuestion(QuestionRecord questionRecord, Game game)
+        public AskQuestion(Question question, Game game)
         {
             InitializeComponent();
-            Question = questionRecord;
+            Question = question;
             this.game = game;
             DataContext = this;
         }

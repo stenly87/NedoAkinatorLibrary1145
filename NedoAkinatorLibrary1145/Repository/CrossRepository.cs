@@ -1,15 +1,14 @@
-﻿using NedoAkinatorLibrary1145.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NedoAkinatorLibrary1145.DB;
 
 namespace NedoAkinatorLibrary1145.Repository
 {
-    public class CrossRepository : BaseRepository<CrossRecord>
+    public class CrossRepository : BaseRepository<Cross>
     {
-        public override void Create(CrossRecord item)
+        public override void Create(Cross item)
         {
             var db = GetDB();
-            db.Crosses.Add(new DB.Cross
+            db.Crosses.Add(new Cross
             {
                  IdHistory = item.IdHistory,
                  IdQuestion = item.IdQuestion, 
@@ -33,28 +32,27 @@ namespace NedoAkinatorLibrary1145.Repository
             throw new Exception("Не используй меня, дурак");
         }
 
-        public CrossRecord Get(int idHistory, int idQuestion)
+        public Cross Get(int idHistory, int idQuestion)
         {
             var db = GetDB();
             var s = db.Crosses.AsNoTracking().FirstOrDefault(s =>
             s.IdQuestion == idQuestion && s.IdHistory == idHistory);
-            return new CrossRecord(s.IdHistory, s.IdQuestion, s.Reaction);
+            return s;
         }
 
-        public override CrossRecord Get(int id)
+        public override Cross Get(int id)
         {
             throw new Exception("Не используй меня, дурак");
         }
 
-        public override IEnumerable<CrossRecord> GetList()
+        public override IEnumerable<Cross> GetList()
         {
             var db = GetDB();
             return db.Crosses.
-                Select(s => new CrossRecord(s.IdHistory, s.IdQuestion, s.Reaction)).
                 AsNoTracking();
         }
 
-        public override void Update(CrossRecord item)
+        public override void Update(Cross item)
         {
             var db = GetDB();
             var origin = db.Crosses.AsNoTracking().FirstOrDefault(s =>
@@ -62,11 +60,10 @@ namespace NedoAkinatorLibrary1145.Repository
             db.Entry(origin).CurrentValues.SetValues(item);
         }
 
-        internal IEnumerable<CrossRecord> GetQuestionsByHistory(int id)
+        internal IEnumerable<Cross> GetQuestionsByHistory(int id)
         {
             var db = GetDB();
             return db.Crosses.
-                Select(s => new CrossRecord(s.IdHistory, s.IdQuestion, s.Reaction)).
                 Where(s => s.IdHistory == id).
                 AsNoTracking();
         }

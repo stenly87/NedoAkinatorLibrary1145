@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using NedoAkinatorLibrary1145.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using NedoAkinatorLibrary1145.DB;
 
 namespace NedoAkinatorLibrary1145.Repository
 {
-    public class CharacterRepository : BaseRepository<CharacterRecord>
+    public class CharacterRepository : BaseRepository<Character>
     {
-        public override void Create(CharacterRecord item)
+        public override void Create(Character item)
         {
             var db = GetDB();
-            db.Characters.Add(new DB.Character { Title = item.Title,
+            db.Characters.Add(new Character { Title = item.Title,
                 Image = item.Image,
             });            
         }
@@ -30,22 +30,21 @@ namespace NedoAkinatorLibrary1145.Repository
             }
         }
 
-        public override CharacterRecord Get(int id)
+        public override Character Get(int id)
         {
             var db = GetDB();
             var s = db.Characters.AsNoTracking().FirstOrDefault(s => s.Id == id);
-            return new CharacterRecord (s.Id, s.Title, s.Image);
+            return s;
         }
 
-        public override IEnumerable<CharacterRecord> GetList()
+        public override IEnumerable<Character> GetList()
         {
             var db = GetDB();
             return db.Characters.
-                Select(s => new CharacterRecord(s.Id, s.Title, s.Image)).
                 AsNoTracking();
         }
 
-        public override void Update(CharacterRecord item)
+        public override void Update(Character item)
         {
             var db = GetDB();
             var origin = db.Characters.Find(item.Id);

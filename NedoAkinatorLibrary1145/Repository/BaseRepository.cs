@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NedoAkinatorLibrary1145.DB;
-using NedoAkinatorLibrary1145.Model;
 
 namespace NedoAkinatorLibrary1145.Repository
 {

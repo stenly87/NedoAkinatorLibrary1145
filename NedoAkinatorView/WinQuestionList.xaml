@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NedoAkinatorView"
         mc:Ignorable="d"
-        xmlns:model="clr-namespace:NedoAkinatorLibrary1145.Model;assembly=NedoAkinatorLibrary1145"
+        xmlns:model="clr-namespace:NedoAkinatorLibrary1145.DB;assembly=NedoAkinatorLibrary1145"
         Title="WinQuestionList" Height="450" Width="800">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type model:QuestionRecord}">
+        <DataTemplate DataType="{x:Type model:Question}">
             <StackPanel>
                 <Label Content="{Binding Text}"/>
             </StackPanel>

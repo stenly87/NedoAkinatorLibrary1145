@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NedoAkinatorView"
         mc:Ignorable="d"
-        xmlns:model="clr-namespace:NedoAkinatorLibrary1145.Model;assembly=NedoAkinatorLibrary1145"
+        xmlns:model="clr-namespace:NedoAkinatorLibrary1145.DB;assembly=NedoAkinatorLibrary1145"
         Title="WinCharacterList" Height="450" Width="800">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type model:CharacterRecord}">
+        <DataTemplate DataType="{x:Type model:Character}">
             <StackPanel>
                 <Image Source="{Binding Image}" Width="100"/>
                 <Label Content="{Binding Title}"/>

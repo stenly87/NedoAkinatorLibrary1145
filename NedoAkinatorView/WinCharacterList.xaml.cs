@@ -1,4 +1,4 @@
-﻿using NedoAkinatorLibrary1145.Model;
+﻿using NedoAkinatorLibrary1145.DB;
 using NedoAkinatorLibrary1145.Repository;
 using System;
 using System.Collections.Generic;
@@ -27,13 +27,13 @@ namespace NedoAkinatorView
     public partial class WinCharacterList : Window,
         INotifyPropertyChanged
     {
-        private CharacterRecord selected;
+        private Character selected;
         private byte[] image;
 
         public int SelectedIndex { get; set; }
 
-        public ObservableCollection<CharacterRecord> Characters { get; set; }
-        public CharacterRecord Selected { 
+        public ObservableCollection<Character> Characters { get; set; }
+        public Character Selected { 
             get => selected;
             set
             {
@@ -61,7 +61,7 @@ namespace NedoAkinatorView
         {
             InitializeComponent();
             var rep = new CharacterRepository();
-            Characters = new ObservableCollection<CharacterRecord>(rep.GetList());
+            Characters = new ObservableCollection<Character>(rep.GetList());
             DataContext = this;
         }
 
@@ -82,7 +82,12 @@ namespace NedoAkinatorView
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            Selected = new CharacterRecord(Selected.Id, TitleCharacter, Image);
+            Selected = new Character
+            {
+                Id = Selected.Id,
+                Title = TitleCharacter,
+                Image = Image
+            };
             var rep = new CharacterRepository();
             if (Selected.Id == 0)
                 rep.Create(Selected);
@@ -95,7 +100,7 @@ namespace NedoAkinatorView
 
         private void NewCharacter(object sender, RoutedEventArgs e)
         {
-            Selected = new CharacterRecord(0, "", null);
+            Selected = new Character();
         }
     }
 }

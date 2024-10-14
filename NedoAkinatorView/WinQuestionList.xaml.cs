@@ -1,5 +1,4 @@
 ﻿using NedoAkinatorLibrary1145.DB;
-using NedoAkinatorLibrary1145.Model;
 using NedoAkinatorLibrary1145.Repository;
 using System;
 using System.Collections.Generic;
@@ -25,15 +24,15 @@ namespace NedoAkinatorView
     public partial class WinQuestionList : Window,
         INotifyPropertyChanged
     {
-        private QuestionRecord selected;
+        private Question selected;
         private string textQuestion;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public int SelectedIndex { get; set; }
 
-        public ObservableCollection<QuestionRecord> Questions { get; set; }
-        public QuestionRecord Selected
+        public ObservableCollection<Question> Questions { get; set; }
+        public Question Selected
         {
             get => selected;
             set
@@ -59,13 +58,13 @@ namespace NedoAkinatorView
         {
             InitializeComponent();
             var rep = new QuestionRepository();
-            Questions = new ObservableCollection<QuestionRecord>(rep.GetList());
+            Questions = new ObservableCollection<Question>(rep.GetList());
             DataContext = this;
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            Selected = new QuestionRecord(Selected.Id, TextQuestion);
+            Selected = new Question { Id = Selected.Id, Text = TextQuestion };
             var rep = new QuestionRepository();
             if (Selected.Id == 0)
                 rep.Create(Selected);
@@ -79,7 +78,7 @@ namespace NedoAkinatorView
 
         private void NewQuestion(object sender, RoutedEventArgs e)
         {
-            Selected = new QuestionRecord(0, "");
+            Selected = new Question();
             TextQuestion = "";
         }
     }
