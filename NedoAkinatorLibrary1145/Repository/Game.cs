@@ -27,7 +27,7 @@ namespace NedoAkinatorView
             var rep = new CrossRepository();
             var notAsked = allQuestions.Where(s =>
                 reactionHistory.FirstOrDefault(r => r.IdQuestion == s.Id) == null);
-
+            
             foreach (var question in notAsked)
             {
                 List<float> Bj = new List<float>();
@@ -38,12 +38,14 @@ namespace NedoAkinatorView
                         cross.Reaction.Value);
 
                     int countTotal = rep.GetQuestionByCharacter(targetCharacter.Id);
-
-                    Bj.Add(count / (float)countTotal);
+                    
+                    if (countTotal > 0)
+                        Bj.Add(count / (float)countTotal);
                 }
-                question.Rank = Or(Bj.ToArray());
+                if (Bj.Count > 0)
+                    question.Rank = Or(Bj.ToArray());
             }
-            notAsked = notAsked.OrderBy(s=> s.Rank);
+            notAsked = notAsked.OrderByDescending(s=> s.Rank);
             currentQuestion = notAsked.FirstOrDefault();
         }
 
@@ -61,11 +63,13 @@ namespace NedoAkinatorView
 
                     int countTotal = rep.GetQuestionByCharacter(character.Id);
 
-                    Bj.Add(count / (float)countTotal);
+                    if (countTotal > 0) 
+                        Bj.Add(count / (float)countTotal);
                 }
-                character.Rank = Or(Bj.ToArray());
+                if (Bj.Count > 0)
+                    character.Rank = Or(Bj.ToArray());
             }
-            characterByRank = characterByRank.OrderBy(s=> s.Rank);
+            characterByRank = characterByRank.OrderByDescending(s=> s.Rank);
             targetCharacter = characterByRank.FirstOrDefault();
         }
 
@@ -151,15 +155,23 @@ namespace NedoAkinatorView
 
         public void RememberResult(Character targetCharacter)
         {
-            throw new NotImplementedException();
+            currentHistory.IdCharacter = targetCharacter.Id;
+
+            var hisRep = new HistoryRepository();
+            hisRep.Update(currentHistory);
+            hisRep.Save();
         }
 
         public void Save(Character character)
         {
             var rep = new CharacterRepository();
-            rep.Create(character);
-            rep.Save();
-            currentHistory.IdCharacter = character.Id;
+            currentHistory.IdCharacter = rep.FindIdByName(character.Title);
+            if (currentHistory.IdCharacter == null)
+            {
+                rep.Create(character);
+                rep.Save();
+            }
+            currentHistory.IdCharacter = rep.FindIdByName(character.Title);
 
             var hisRep = new HistoryRepository();
             hisRep.Update(currentHistory);

@@ -50,5 +50,12 @@ namespace NedoAkinatorLibrary1145.Repository
             var origin = db.Characters.Find(item.Id);
             db.Entry(origin).CurrentValues.SetValues(item);
         }
+
+        internal int? FindIdByName(string? title)
+        {
+            var db = GetDB();
+            var origin = db.Characters.FirstOrDefault(s=>s.Title == title);
+            return origin != null ? origin.Id : null;
+        }
     }
 }

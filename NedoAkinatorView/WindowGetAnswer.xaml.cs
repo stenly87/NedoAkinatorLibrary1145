@@ -33,6 +33,7 @@ namespace NedoAkinatorView
         private void Save(object sender, RoutedEventArgs e)
         {
 
+
             var character = new NedoAkinatorLibrary1145.DB.Character
             {
                 Title = Answer
@@ -40,7 +41,7 @@ namespace NedoAkinatorView
            
 
             game.Save(character);
-            
+            Close();
             
 
         }

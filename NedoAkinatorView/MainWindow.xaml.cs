@@ -61,7 +61,7 @@ namespace NedoAkinatorView
                 {
                     new WindowGetAnswer(game).Show();
                 }
-                
+                gridHost.Children.Clear();
             }
         }
     }
